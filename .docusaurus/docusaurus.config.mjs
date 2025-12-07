@@ -47,7 +47,7 @@ export default {
       {
         "docs": {
           "sidebarPath": "./sidebars.ts",
-          "editUrl": "https://github.com/specifykit/ai-native-book/tree/main/"
+          "editUrl": "https://github.com/Dawood231/Ai-Native-Book/tree/main/"
         },
         "blog": {
           "showReadingTime": true,
@@ -58,7 +58,7 @@ export default {
             ],
             "xslt": true
           },
-          "editUrl": "https://github.com/specifykit/ai-native-book/tree/main/",
+          "editUrl": "https://github.com/Dawood231/Ai-Native-Book/tree/main/",
           "onInlineTags": "warn",
           "onInlineAuthors": "warn",
           "onUntruncatedBlogPosts": "warn"

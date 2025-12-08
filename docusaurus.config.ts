@@ -137,7 +137,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} SpecifyKit. Published buy Dawood Siddiqui.`,
+      copyright: `Copyright © ${new Date().getFullYear()} SpecifyKit. Published by Dawood Siddiqui.`,
     },
     prism: {
       theme: prismThemes.github,

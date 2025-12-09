@@ -7,6 +7,7 @@ import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
 
 import styles from './index.module.css';
+import ChatBot from '../components/ChatBot';
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
@@ -39,6 +40,7 @@ export default function Home(): ReactNode {
       <main>
         <HomepageFeatures />
       </main>
+      <ChatBot />
     </Layout>
   );
 }

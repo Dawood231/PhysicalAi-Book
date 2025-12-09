@@ -140,12 +140,12 @@ export default {
             },
             {
               "label": "GitHub",
-              "href": "https://github.com/facebook/docusaurus"
+              "href": "https://github.com/Dawood231/Ai-Native-Book/tree/main/"
             }
           ]
         }
       ],
-      "copyright": "Copyright © 2025 SpecifyKit. Built with Docusaurus."
+      "copyright": "Copyright © 2025 SpecifyKit. Published by Dawood Siddiqui."
     },
     "prism": {
       "theme": {

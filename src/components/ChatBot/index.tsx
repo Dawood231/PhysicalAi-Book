@@ -2,6 +2,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import clsx from 'clsx';
 import styles from './styles.module.css';
+import { authClient, useSession } from '../../lib/auth-client';
+import { AuthPopup } from '../AuthPopup';
 
 // Types
 interface Message {
@@ -13,6 +15,10 @@ interface Message {
 
 const ChatBot: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+    const { data: session } = useSession();
+
+    // Initial message only added once or if session changes (optional logic)
     const [messages, setMessages] = useState<Message[]>([
         {
             id: '1',
@@ -35,6 +41,11 @@ const ChatBot: React.FC = () => {
 
     const handleSendMessage = async (e?: React.FormEvent) => {
         e?.preventDefault();
+
+        if (!session) {
+            setIsAuthModalOpen(true);
+            return;
+        }
 
         if (!inputValue.trim()) return;
 
@@ -86,81 +97,103 @@ const ChatBot: React.FC = () => {
         }
     };
 
+    const handleLoginClick = () => {
+        setIsAuthModalOpen(true);
+    };
+
     return (
-        <div className={styles.container}>
-            {isOpen && (
-                <div className={styles.chatWindow}>
-                    <div className={styles.header}>
-                        <div className={styles.headerInfo}>
-                            <div className={styles.avatar}>
-                                <RobotIcon />
+        <>
+            <div className={styles.container}>
+                {isOpen && (
+                    <div className={styles.chatWindow}>
+                        <div className={styles.header}>
+                            <div className={styles.headerInfo}>
+                                <div className={styles.avatar}>
+                                    <RobotIcon />
+                                </div>
+                                <div className={styles.titleContainer}>
+                                    <span className={styles.title}>AI Assistant</span>
+                                    <span className={styles.status}>
+                                        <span className={styles.statusDot}></span>
+                                        Online
+                                    </span>
+                                </div>
                             </div>
-                            <div className={styles.titleContainer}>
-                                <span className={styles.title}>AI Assistant</span>
-                                <span className={styles.status}>
-                                    <span className={styles.statusDot}></span>
-                                    Online
-                                </span>
-                            </div>
-                        </div>
-                        <button
-                            className={styles.closeButton}
-                            onClick={() => setIsOpen(false)}
-                            aria-label="Close chat"
-                        >
-                            <CloseIcon />
-                        </button>
-                    </div>
-
-                    <div className={styles.messagesContainer}>
-                        {messages.map((msg) => (
-                            <div
-                                key={msg.id}
-                                className={clsx(
-                                    styles.message,
-                                    msg.sender === 'bot' ? styles.botMessage : styles.userMessage
-                                )}
+                            <button
+                                className={styles.closeButton}
+                                onClick={() => setIsOpen(false)}
+                                aria-label="Close chat"
                             >
-                                {msg.text}
-                            </div>
-                        ))}
-                        {isTyping && (
-                            <div className={clsx(styles.message, styles.botMessage)}>
-                                Typing...
-                            </div>
-                        )}
-                        <div ref={messagesEndRef} />
+                                <CloseIcon />
+                            </button>
+                        </div>
+
+                        <div className={styles.messagesContainer}>
+                            {messages.map((msg) => (
+                                <div
+                                    key={msg.id}
+                                    className={clsx(
+                                        styles.message,
+                                        msg.sender === 'bot' ? styles.botMessage : styles.userMessage
+                                    )}
+                                >
+                                    {msg.text}
+                                </div>
+                            ))}
+                            {isTyping && (
+                                <div className={clsx(styles.message, styles.botMessage)}>
+                                    Typing...
+                                </div>
+                            )}
+                            <div ref={messagesEndRef} />
+                        </div>
+
+                        <div className={styles.inputWrapper}>
+                            {!session ? (
+                                <div className={styles.loginOverlay}>
+                                    <button onClick={handleLoginClick} className={styles.loginButton}>
+                                        Login to Chat
+                                    </button>
+                                </div>
+                            ) : (
+                                <form className={styles.inputArea} onSubmit={handleSendMessage}>
+                                    <input
+                                        type="text"
+                                        className={styles.input}
+                                        placeholder="Type a message..."
+                                        value={inputValue}
+                                        onChange={(e) => setInputValue(e.target.value)}
+                                        autoFocus
+                                    />
+                                    <button
+                                        type="submit"
+                                        className={styles.sendButton}
+                                        disabled={!inputValue.trim() || isTyping}
+                                        aria-label="Send message"
+                                    >
+                                        <SendIcon />
+                                    </button>
+                                </form>
+                            )}
+                        </div>
                     </div>
+                )}
 
-                    <form className={styles.inputArea} onSubmit={handleSendMessage}>
-                        <input
-                            type="text"
-                            className={styles.input}
-                            placeholder="Type a message..."
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                            autoFocus
-                        />
-                        <button
-                            type="submit"
-                            className={styles.sendButton}
-                            disabled={!inputValue.trim() || isTyping}
-                            aria-label="Send message"
-                        >
-                            <SendIcon />
-                        </button>
-                    </form>
-                </div>
-            )}
+                <button
+                    className={clsx(styles.toggleButton, !isOpen && styles.pulse)}
+                    onClick={() => setIsOpen(!isOpen)}
+                    aria-label="Toggle chat"
+                >
+                    {isOpen ? <CloseIcon /> : <ChatIcon />}
+                </button>
+            </div>
 
-            <button
-                className={clsx(styles.toggleButton, !isOpen && styles.pulse)}
-                onClick={() => setIsOpen(!isOpen)}
-                aria-label="Toggle chat"
-            >
-                {isOpen ? <CloseIcon /> : <ChatIcon />}
-            </button>
-        </div>
+            <AuthPopup
+                isOpen={isAuthModalOpen}
+                onClose={() => setIsAuthModalOpen(false)}
+                onSuccess={() => setIsAuthModalOpen(false)}
+            />
+        </>
     );
 };
 

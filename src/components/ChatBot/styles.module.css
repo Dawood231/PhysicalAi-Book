@@ -17,11 +17,13 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  pointer-events: none; /* Allow clicking through when closed */
+  pointer-events: none;
+  /* Allow clicking through when closed */
 }
 
 .container * {
-  pointer-events: auto; /* Re-enable pointer events for children */
+  pointer-events: auto;
+  /* Re-enable pointer events for children */
   box-sizing: border-box;
 }
 
@@ -64,7 +66,7 @@
   overflow: hidden;
   transform-origin: bottom right;
   animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  border: 1px solid rgba(0,0,0,0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 /* Header */
@@ -175,7 +177,7 @@
 .inputArea {
   padding: 1rem;
   background: var(--white);
-  border-top: 1px solid rgba(0,0,0,0.05);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
   display: flex;
   gap: 0.5rem;
 }
@@ -220,12 +222,44 @@
   background: #e5e7eb;
 }
 
+.inputWrapper {
+  padding: 1rem;
+  background: white;
+  border-top: 1px solid #f1f5f9;
+}
+
+.loginOverlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.loginButton {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+
+.loginButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
+}
+
 /* Animations */
 @keyframes slideIn {
   from {
     opacity: 0;
     transform: scale(0.95) translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -237,6 +271,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -248,9 +283,11 @@
   0% {
     box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4);
   }
+
   70% {
     box-shadow: 0 0 0 10px rgba(168, 85, 247, 0);
   }
+
   100% {
     box-shadow: 0 0 0 0 rgba(168, 85, 247, 0);
   }

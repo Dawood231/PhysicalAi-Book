@@ -16,5 +16,10 @@ export const auth = betterAuth({
         "http://127.0.0.1:3000",
         "https://ai-native-book-orcin.vercel.app"
     ],
-    // Add other providers or plugins here if needed
+    session: {
+        cookieCache: {
+            enabled: true,
+            maxAge: 5 * 60,
+        },
+    },
 });
